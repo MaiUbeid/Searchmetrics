@@ -18,13 +18,20 @@ const GET_KEYWORDS = gql`
 
 function App() {
   const [input, setInput] = useState('');
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([
+    {
+      id: 1,
+      title: 'sport',
+      keywords: 'athletics, sportsman, sportswoman',
+    },
+    { id: 2, title: 'dance', keywords: 'terpsichore, trip, the light' },
+    { id: 3, title: 'write', keywords: 'publish, compose, pen' },
+  ]);
 
-  const rows = [];
   let keywords = [];
 
   const { data, loading, error } = useQuery(GET_KEYWORDS, {
-    variables: { category: 'water' },
+    variables: { category: 'input' }, //take the value from input
   });
 
   if (loading) return <p>Loading...</p>;
@@ -38,7 +45,6 @@ function App() {
   };
 
   const handleClick = () => {
-    console.log('input: ', input);
     if (data) {
       keywords = data.getKeywords.map((item) => {
         return item.word;
@@ -46,11 +52,12 @@ function App() {
     }
     setCategories([
       ...categories,
-      { id: categories.length + 1, title: input, keywords: keywords },
+      {
+        id: categories.length + 1,
+        title: input,
+        keywords: keywords.join(', '),
+      },
     ]);
-
-    rows.push(categories[0]);
-    // console.log(categories);
   };
 
   return (
@@ -67,13 +74,12 @@ function App() {
         onChange={handleChange}
       />
 
-      {console.log(rows)}
       <Table
-        rows={rows}
+        rows={categories}
         columns={['Category', 'Keywords', '']}
         id={1}
         className="app__table"
-        // addKeyword={addKeyword}
+        addKeyword={() => {}}
       />
 
       <div className="app__button">

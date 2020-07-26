@@ -60,6 +60,10 @@ body {
 
     td {
       padding: 1rem 2rem;
+
+      &:first-child {
+        display: none;
+      }
     }
   }
 
