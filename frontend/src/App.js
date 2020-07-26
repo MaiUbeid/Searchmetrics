@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -29,6 +29,8 @@ function App() {
     { id: 3, title: 'write', keywords: 'publish, compose, pen' },
   ]);
 
+  const inputEl = useRef(null);
+
   let keywords = [];
 
   const { data, loading, error } = useQuery(GET_KEYWORDS, {
@@ -37,14 +39,9 @@ function App() {
 
   if (error) return <p>Error</p>;
 
-  const handleChange = ({ target: { value } }) => {
-    if (value !== '') {
-      setInput(value);
-    }
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
+    setInput(inputEl.current.value);
     if (data) {
       keywords = data.getKeywords.map((item) => {
         return item.word;
@@ -73,8 +70,7 @@ function App() {
           name="category"
           placeholder="Type Category..."
           className="app__input"
-          value={input}
-          onChange={handleChange}
+          ref={inputEl}
         />
         <input
           type="submit"
