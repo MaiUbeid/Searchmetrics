@@ -29,9 +29,10 @@ function App() {
   ]);
 
   let keywords = [];
+  let [category, setCategory] = useState(''); //
 
   const { data, loading, error } = useQuery(GET_KEYWORDS, {
-    variables: { category: input }, //take the value from input
+    variables: { category: category }, //take the value from input
   });
 
   if (loading) return <p>Loading...</p>;
@@ -46,6 +47,7 @@ function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setCategory(input); ///////////////////////// change the category to request
     if (data) {
       keywords = data.getKeywords.map((item) => {
         return item.word;
