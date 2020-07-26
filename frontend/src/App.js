@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import Table from './components/Table';
+import { Table } from './components';
+
 import './style.scss';
 
 const GET_KEYWORDS = gql`
@@ -18,6 +19,7 @@ const GET_KEYWORDS = gql`
 function App() {
   const [input, setInput] = useState('');
   const [categories, setCategories] = useState([]);
+
   const rows = [];
   let keywords = [];
 
