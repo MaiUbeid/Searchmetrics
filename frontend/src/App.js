@@ -18,6 +18,7 @@ const GET_KEYWORDS = gql`
 
 function App() {
   const [input, setInput] = useState('');
+
   const [categories, setCategories] = useState([
     {
       id: 1,
@@ -29,25 +30,21 @@ function App() {
   ]);
 
   let keywords = [];
-  let [category, setCategory] = useState(''); //
 
   const { data, loading, error } = useQuery(GET_KEYWORDS, {
-    variables: { category: category }, //take the value from input
+    variables: { category: input },
   });
 
-  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
 
   const handleChange = ({ target: { value } }) => {
     if (value !== '') {
-      value = value.trim().toLowerCase();
       setInput(value);
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setCategory(input); ///////////////////////// change the category to request
     if (data) {
       keywords = data.getKeywords.map((item) => {
         return item.word;
