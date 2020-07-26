@@ -58,6 +58,7 @@ function App() {
         keywords: keywords.join(', '),
       },
     ]);
+    setInput('');
   };
 
   return (
