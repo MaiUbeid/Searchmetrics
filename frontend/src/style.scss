@@ -34,14 +34,14 @@ body {
   }
 
   &__input {
-    width: 70%;
+    width: 58%;
     height: 2rem;
     border-radius: 0.5rem;
     border: none;
     outline: none;
     text-align: center;
     padding: 0.5rem 1rem;
-    margin-top: 2rem;
+    margin: 2rem 1rem 0 0;
     text-transform: capitalize;
   }
 
@@ -68,9 +68,6 @@ body {
   }
 
   &__button {
-    margin-left: 15%;
-    text-align: left;
-
     &--text {
       font-weight: 700;
       border-radius: 0.5rem;

@@ -31,20 +31,21 @@ function App() {
   let keywords = [];
 
   const { data, loading, error } = useQuery(GET_KEYWORDS, {
-    variables: { category: 'input' }, //take the value from input
+    variables: { category: input }, //take the value from input
   });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
 
-  function handleChange({ target: { value } }) {
+  const handleChange = ({ target: { value } }) => {
     if (value !== '') {
       value = value.trim().toLowerCase();
       setInput(value);
     }
-  }
+  };
 
-  function handleClick() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     if (data) {
       keywords = data.getKeywords.map((item) => {
         return item.word;
@@ -58,7 +59,7 @@ function App() {
         keywords: keywords.join(', '),
       },
     ]);
-  }
+  };
 
   return (
     <div className="app">
@@ -66,13 +67,21 @@ function App() {
         Get <span className="app__logo--span">Categories</span>
       </h1>
 
-      <input
-        type="text"
-        name="category"
-        placeholder="Type Category..."
-        className="app__input"
-        onChange={handleChange}
-      />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="category"
+          placeholder="Type Category..."
+          className="app__input"
+          value={input}
+          onChange={handleChange}
+        />
+        <input
+          type="submit"
+          value="Add Category"
+          className="app__button--text"
+        />
+      </form>
 
       <Table
         rows={categories}
@@ -81,12 +90,6 @@ function App() {
         className="app__table"
         addKeyword={() => {}}
       />
-
-      <div className="app__button">
-        <button className="app__button--text" onClick={() => handleClick()}>
-          Add Category
-        </button>
-      </div>
     </div>
   );
 }
