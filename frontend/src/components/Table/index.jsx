@@ -4,7 +4,6 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Table({ rows, columns, id, className, addKeyword }) {
-  console.log('table', rows);
   function renderHead(columnsData) {
     return columnsData.reduce((acc, el, idx, arr) => {
       acc.push(
