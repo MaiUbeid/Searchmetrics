@@ -56,6 +56,7 @@ function App() {
           keywords: keywords.join(', '),
         },
       ]);
+      setInput(`${inputEl.current.value}`);
     }
   };
 
