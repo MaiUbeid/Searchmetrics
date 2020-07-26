@@ -36,8 +36,6 @@ function App() {
     variables: { category: input },
   });
 
-  if (error) return <p>Error</p>;
-
   const handleSubmit = (event) => {
     event.preventDefault();
     setInput(`${inputEl.current.value}`);
