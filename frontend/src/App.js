@@ -37,14 +37,14 @@ function App() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
 
-  const handleChange = ({ target: { value } }) => {
+  function handleChange({ target: { value } }) {
     if (value !== '') {
       value = value.trim().toLowerCase();
       setInput(value);
     }
-  };
+  }
 
-  const handleClick = () => {
+  function handleClick() {
     if (data) {
       keywords = data.getKeywords.map((item) => {
         return item.word;
@@ -58,7 +58,7 @@ function App() {
         keywords: keywords.join(', '),
       },
     ]);
-  };
+  }
 
   return (
     <div className="app">
