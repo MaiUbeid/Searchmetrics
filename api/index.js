@@ -17,7 +17,6 @@ const resolvers = {
   Query: {
     getKeywords: async (_parent, args) => {
       const { category } = args;
-      console.log(category);
       try {
         const categories = await axios.get(
           `https://api.datamuse.com/words?ml=${category}`

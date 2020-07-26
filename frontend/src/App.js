@@ -37,11 +37,14 @@ function App() {
     skip: input === null,
   });
 
+  if (loading) return <p>Loading</p>;
+  if (error) return <p>Error</p>;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setInput(`${inputEl.current.value}`);
-    console.log('after', input);
-    if (data && data.getKeywords.length !== 0) {
+
+    if (data) {
       keywords = data.getKeywords.map((item) => {
         return item.word;
       });
