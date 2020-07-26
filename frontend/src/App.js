@@ -18,7 +18,7 @@ const GET_KEYWORDS = gql`
 
 function App() {
   const inputEl = useRef(null);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(null);
 
   const [categories, setCategories] = useState([
     {
@@ -34,6 +34,7 @@ function App() {
 
   const { data, loading, error } = useQuery(GET_KEYWORDS, {
     variables: { category: input },
+    skip: input === null,
   });
 
   const handleSubmit = (event) => {
