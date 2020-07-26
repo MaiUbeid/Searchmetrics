@@ -17,6 +17,7 @@ const GET_KEYWORDS = gql`
 `;
 
 function App() {
+  const inputEl = useRef(null);
   const [input, setInput] = useState('');
 
   const [categories, setCategories] = useState([
@@ -29,8 +30,6 @@ function App() {
     { id: 3, title: 'write', keywords: 'publish, compose, pen' },
   ]);
 
-  const inputEl = useRef(null);
-
   let keywords = [];
 
   const { data, loading, error } = useQuery(GET_KEYWORDS, {
@@ -41,21 +40,21 @@ function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setInput(inputEl.current.value);
-    if (data) {
+    setInput(`${inputEl.current.value}`);
+    console.log('after', input);
+    if (data && data.getKeywords.length !== 0) {
       keywords = data.getKeywords.map((item) => {
         return item.word;
       });
+      setCategories([
+        ...categories,
+        {
+          id: categories.length + 1,
+          title: input,
+          keywords: keywords.join(', '),
+        },
+      ]);
     }
-    setCategories([
-      ...categories,
-      {
-        id: categories.length + 1,
-        title: input,
-        keywords: keywords.join(', '),
-      },
-    ]);
-    setInput('');
   };
 
   return (
