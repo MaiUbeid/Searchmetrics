@@ -24,13 +24,67 @@ function App() {
     {
       id: 1,
       title: 'sport',
-      keywords: 'athletics, sportsman, sportswoman',
+      keywords: [
+        'athletics',
+        'sportsman',
+        'sportswoman',
+        'fun',
+        'paly',
+        'disport',
+        'lark',
+        'boast',
+        'rollick',
+        'frolic',
+      ],
     },
-    { id: 2, title: 'dance', keywords: 'terpsichore, trip, the light' },
-    { id: 3, title: 'write', keywords: 'publish, compose, pen' },
+    {
+      id: 2,
+      title: 'dance',
+      keywords: [
+        'terpsichore',
+        'trip the light fantastic',
+        'dancers',
+        'tango',
+        'choreography',
+        'choreographer',
+        'waltz',
+        'troupe',
+        'ballroom',
+        'music',
+      ],
+    },
+    {
+      id: 3,
+      title: 'write',
+      keywords: [
+        'publish',
+        'compose',
+        'pen',
+        'spell',
+        'drop a line',
+        'indite',
+        'read',
+        'rewrite',
+        'submit',
+        'reword',
+      ],
+    },
   ]);
 
   let keywords = [];
+
+  const [rows, setRows] = useState(
+    categories.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        keywords:
+          typeof item.keywords === 'object'
+            ? item.keywords.slice(0, 3).join(', ')
+            : item.keywords,
+      };
+    })
+  );
 
   const { data, loading, error } = useQuery(GET_KEYWORDS, {
     variables: { category: input },
@@ -48,17 +102,53 @@ function App() {
       keywords = data.getKeywords.map((item) => {
         return item.word;
       });
+
       setCategories([
         ...categories,
         {
           id: categories.length + 1,
           title: input,
-          keywords: keywords.join(', '),
+          keywords: keywords,
         },
       ]);
-      setInput(`${inputEl.current.value}`);
+      setRows([
+        ...rows,
+        {
+          id: categories.length + 1,
+          title: input,
+          keywords: keywords.slice(0, 3).join(', '),
+        },
+      ]);
+      setInput('');
     }
   };
+
+  function addKeyword(e) {
+    e.preventDefault();
+    if (e.target.parentNode.nodeName.toLowerCase() === 'tr') {
+      const id = e.target.parentNode.getAttribute('data-id');
+      const elementIndex = rows.findIndex((element) => element.id == id);
+      let { keywords } = categories.find((item) => {
+        if (id == item.id) return item;
+      });
+      let { keywords: prevKeywords } = rows.find((item) => {
+        if (id == item.id) return item;
+      });
+      let prevKeywordsLength;
+      if (typeof prevKeywords === 'string')
+        prevKeywordsLength = prevKeywords.split(',').length;
+      else prevKeywords = prevKeywords.length;
+
+      if (keywords.length > prevKeywordsLength) {
+        let newKeyword = keywords[prevKeywordsLength];
+        rows[elementIndex].keywords = [
+          ...rows[0].keywords.split(','),
+          newKeyword,
+        ];
+        setRows(rows); // don't word
+      }
+    }
+  }
 
   return (
     <div className="app">
@@ -82,11 +172,11 @@ function App() {
       </form>
 
       <Table
-        rows={categories}
+        rows={rows}
         columns={['Category', 'Keywords', '']}
         id={1}
         className="app__table"
-        addKeyword={() => {}}
+        addKeyword={addKeyword}
       />
     </div>
   );
