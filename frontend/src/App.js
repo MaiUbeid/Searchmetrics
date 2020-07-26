@@ -44,7 +44,7 @@ function App() {
     event.preventDefault();
     setInput(`${inputEl.current.value}`);
 
-    if (data) {
+    if (data && data.getKeywords.length !== 0) {
       keywords = data.getKeywords.map((item) => {
         return item.word;
       });
