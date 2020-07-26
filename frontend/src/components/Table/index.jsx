@@ -3,20 +3,8 @@ import PropTypes from 'prop-types';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Table({
-  rows,
-  columns,
-  id,
-  className,
-  keywords,
-  keywordsLength,
-}) {
-  const addKeyword = (keywords, keywordsLength) => {
-    const newKeywords = [keywords.slice(0, keywordsLength + 1)];
-    console.log(newKeywords); /// here wrong code
-  };
-
-  const renderHead = (columnsData) => {
+export default function Table({ rows, columns, id, className, addKeyword }) {
+  function renderHead(columnsData) {
     return columnsData.reduce((acc, el, idx, arr) => {
       acc.push(
         <th key={`${el}-${idx}`} className="dataTableClass__th">
@@ -28,28 +16,27 @@ export default function Table({
       }
       return acc;
     }, []);
-  };
+  }
 
-  const renderBody = (rowsData) => {
+  function renderBody(rowsData) {
     return rowsData.reduce((acc, el, idx, arr) => {
       const rowCells = Object.keys(el);
       const cells = rowCells.map((cell, idx, arr) => (
         <td key={`${el[cell]}-${idx}`}>{el[cell]}</td>
       ));
       acc.push(
-        <tr key={`${el}-${idx}`}>
+        <tr key={`${el}-${idx}`} data-id={el.id}>
           {cells}
-          <button
-            className="app__button--icon"
-            onClick={() => addKeyword(keywords, keywordsLength)}
-          >
-            <FontAwesomeIcon icon={faPlusCircle} className="app__icon" />
-          </button>
+          <FontAwesomeIcon
+            icon={faPlusCircle}
+            className="app__icon"
+            onClick={addKeyword}
+          />
         </tr>
       );
       return acc;
     }, []);
-  };
+  }
 
   return (
     <table id={id} className={className}>
@@ -61,7 +48,7 @@ export default function Table({
 
 Table.defaultProps = {
   className: '',
-  keywords: [],
+  addKeyword: () => {},
 };
 
 Table.propTypes = {
@@ -69,5 +56,5 @@ Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   id: PropTypes.number.isRequired,
   className: PropTypes.string,
-  keywords: PropTypes.arrayOf(PropTypes.string),
+  addKeyword: PropTypes.func,
 };
